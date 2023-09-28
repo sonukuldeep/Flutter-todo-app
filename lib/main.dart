@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         home: const TodoPage(),
         theme: ThemeData(
           primarySwatch: Colors.blueGrey,
-          checkboxTheme: CheckboxThemeData(
+          checkboxTheme: const CheckboxThemeData(
             checkColor: MaterialStatePropertyAll(Colors.blueGrey),
             fillColor: MaterialStatePropertyAll(Colors.white),
           ),
