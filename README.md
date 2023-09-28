@@ -3,6 +3,7 @@
 Widgets are the fundamental building blocks of user interfaces. Widgets can be thought of as UI components or elements, and you can use them to construct your app's user interface.
 
 ## Screenshot
+<img src="https://github.com/sonukuldeep/Flutter-todo-app/assets/57728165/c2243130-6a44-464f-859a-7a5a39e1221b" width="300px" />
 
 
 ## Integrate Hive
