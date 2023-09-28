@@ -115,7 +115,7 @@ class _TodoPageState extends State<TodoPage> {
         title: const Text(
           "My Todo App",
           style: TextStyle(
-              color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0,
@@ -130,7 +130,7 @@ class _TodoPageState extends State<TodoPage> {
           padding: const EdgeInsets.all(12),
           margin: const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 0),
           decoration: BoxDecoration(
-            color: Colors.yellowAccent,
+            color: Colors.blueGrey,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Todo(
@@ -182,20 +182,21 @@ class Todo extends StatelessWidget {
                 title1,
                 style: TextStyle(
                     fontSize: 20,
+                    color: Colors.white,
                     decoration: isChecked
                         ? TextDecoration.lineThrough
                         : TextDecoration.none),
               ),
               Text(
                 title2,
-                style: const TextStyle(fontWeight: FontWeight.w300),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w300, color: Colors.white),
               )
             ],
           ),
           // column two
           Checkbox(
             value: isChecked,
-            activeColor: Colors.black,
             onChanged: onChanged,
           )
         ],

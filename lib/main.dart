@@ -15,9 +15,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const TodoPage(),
-      theme: ThemeData(primarySwatch: Colors.yellow),
-    );
+        debugShowCheckedModeBanner: false,
+        home: const TodoPage(),
+        theme: ThemeData(
+          primarySwatch: Colors.blueGrey,
+          checkboxTheme: CheckboxThemeData(
+            checkColor: MaterialStatePropertyAll(Colors.blueGrey),
+            fillColor: MaterialStatePropertyAll(Colors.white),
+          ),
+        ));
   }
 }
