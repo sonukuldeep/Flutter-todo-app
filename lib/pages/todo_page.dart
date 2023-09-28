@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_beginer/data/database.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TodoPage extends StatefulWidget {
@@ -9,26 +10,22 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> {
-  List todo = [
-    [
-      "Go to the Gym",
-      "Cheat day today",
-      false,
-    ],
-    [
-      "Doctor's visit",
-      "take health book",
-      false,
-    ]
-  ];
+  TodoDatabase db = TodoDatabase();
+
+  @override
+  void initState() {
+    db.loadData();
+    super.initState();
+  }
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController bodyController = TextEditingController();
 
   void toggleTodoTask(int index) {
     setState(() {
-      todo[index][2] = !todo[index][2];
+      db.todos[index][2] = !db.todos[index][2];
     });
+    db.updateData();
   }
 
   void addTodo({required String title, required String body}) {
@@ -36,20 +33,22 @@ class _TodoPageState extends State<TodoPage> {
       return;
     }
     setState(() {
-      todo = [
+      db.todos = [
         [title, body, false],
-        ...todo
+        ...db.todos
       ];
       titleController.clear();
       bodyController.clear();
     });
     Navigator.of(context).pop();
+    db.updateData();
   }
 
   void deleteTodo(int index) {
     setState(() {
-      todo.removeAt(index);
+      db.todos.removeAt(index);
     });
+    db.updateData();
   }
 
   void createNewTodo() {
@@ -126,7 +125,7 @@ class _TodoPageState extends State<TodoPage> {
         child: const Icon(Icons.add),
       ),
       body: ListView.builder(
-        itemCount: todo.length,
+        itemCount: db.todos.length,
         itemBuilder: (context, index) => Container(
           padding: const EdgeInsets.all(12),
           margin: const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 0),
@@ -135,9 +134,9 @@ class _TodoPageState extends State<TodoPage> {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Todo(
-            title1: todo[index][0],
-            title2: todo[index][1],
-            isChecked: todo[index][2],
+            title1: db.todos[index][0],
+            title2: db.todos[index][1],
+            isChecked: db.todos[index][2],
             onChanged: (value) => toggleTodoTask(index),
             deleteTodo: (p0) => deleteTodo(index),
           ),

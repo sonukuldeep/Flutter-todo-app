@@ -384,6 +384,133 @@ return Scaffold(
       ),
     );
 ```
+
+## Integrate Hive
+
+### Install
+add hive, hive_flutter, hive_generator and build_runner to pubspec.yaml
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+  flutter_slidable: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  hive_generator: ^1.1.3
+  build_runner: ^2.1.11
+```
+
+### Config
+main.dart
+```dart
+import 'package:hive_flutter/hive_flutter.dart';
+
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox('todoDB');
+
+  runApp(const MyApp());
+}
+```
+
+database file
+lib/data/database.dart
+```dart
+import 'package:hive_flutter/adapters.dart';
+
+class TodoDatabase {
+  List todos = [];
+  final _todoDB = Hive.box("todoDB");
+
+  void _createDummyData() {
+    todos = [
+      [
+        "Go to the Gym",
+        "Cheat day today",
+        false,
+      ],
+      [
+        "Doctor's visit",
+        "take health book",
+        false,
+      ]
+    ];
+  }
+
+  void loadData() {
+    var res = _todoDB.get("todos");
+    if (res == null) {
+      _createDummyData();
+    } else {
+      todos = res;
+    }
+  }
+
+  void updateData() {
+    _todoDB.put("todos", todos);
+  }
+}
+```
+
+get ans set data
+```dart
+class TodoPage extends StatefulWidget {
+  const TodoPage({super.key});
+
+  @override
+  State<TodoPage> createState() => _TodoPageState();
+}
+
+class _TodoPageState extends State<TodoPage> {
+  TodoDatabase db = TodoDatabase(); // <-- instance of database class
+
+  @override
+  void initState() {
+    db.loadData(); // <-- load data
+    super.initState();
+  }
+
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController bodyController = TextEditingController();
+
+  void toggleTodoTask(int index) {
+    setState(() {
+      db.todos[index][2] = !db.todos[index][2];
+    });
+    db.updateData(); // <-- update data
+  }
+
+  void addTodo({required String title, required String body}) {
+    if (title.isEmpty || body.isEmpty) {
+      return;
+    }
+    setState(() {
+      db.todos = [
+        [title, body, false],
+        ...db.todos
+      ];
+      titleController.clear();
+      bodyController.clear();
+    });
+    Navigator.of(context).pop();
+    db.updateData();
+  }
+
+  void deleteTodo(int index) {
+    setState(() {
+      db.todos.removeAt(index);
+    });
+    db.updateData();
+  }
+```
 ## Badges
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/) 
